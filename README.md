@@ -1,186 +1,64 @@
-[taller1_iva.ipynb](https://github.com/user-attachments/files/31221591/taller1_iva.ipynb)
-{
- "nbformat": 4,
- "nbformat_minor": 5,
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "name": "python",
-   "version": "3.11"
-  }
- },
- "cells": [
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "**Estudiante:** Davidcordoba\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# Sistema de Facturación · Papelería El Recibo · v0.1\n",
-    "\n",
-    "Curso: Lenguajes de Programación (FDE 058) · Semana 3 · Entrega individual calificada (Seguimiento 60 %).\n",
-    "\n",
-    "Este cuaderno no es un ejercicio suelto: es la primera versión del sistema de facturación de la papelería. Al terminar, el programa atiende una venta de principio a fin —pide los datos en caja, calcula el impuesto y emite una factura con la marca del negocio y su número consecutivo— y cierra con el resumen de ventas del día.\n",
-    "\n",
-    "Todo se resuelve con lo que ya sabes: datos con nombre, tipos, operaciones y mensajes en pantalla. Hoy no se usan funciones propias (def / function), decisiones (if) ni ciclos.\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# La regla del negocio: el IVA\n",
-    "\n",
-    "El IVA (Impuesto al Valor Agregado) es un porcentaje que se suma al precio de venta. En Colombia la tarifa general es del 19 %.\n",
-    "\n",
-    "El subtotal es lo que cuesta la mercancía sin impuesto (cantidad por valor unitario). El IVA sale de multiplicar ese subtotal por la tarifa en decimales (19 % = 0.19) y el total a pagar es la suma de ambos.\n",
-    "\n",
-    "$$Subtotal = cantidad \\times valor\\_unitario$$\n",
-    "\n",
-    "$$IVA = Subtotal \\times tarifa$$\n",
-    "\n",
-    "$$Total = Subtotal + IVA = Subtotal \\times (1 + tarifa)$$\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# Cómo se trabaja este cuaderno\n",
-    "\n",
-    "Cada bloque es una parte del sistema y se ejecuta con ▶. Lo que creas en un bloque sigue vivo en los siguientes, igual que en un cuaderno de Colab o en un guion de RStudio.\n",
-    "\n",
-    "Cuando tu programa pide un dato con input (Python) o readline (R), el cuaderno responde con los datos de prueba del panel de arriba, en el mismo orden en que los pides. Cámbialos y vuelve a ejecutar para atender otra venta.\n",
-    "\n",
-    "Rotula cada bloque con un comentario (#) que diga qué hace. Un sistema sin rótulos es un sistema que nadie puede retomar mañana: eso también se califica.\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 1. Datos del negocio: guarda en variables el nombre de la papelería, su NIT, el número de la factura y la tarifa del IVA. Son los datos que no cambian en cada venta.\n",
-    "# Sistema de facturación - Papelería El Recibo\n",
-    "# Autor: escribe tu nombre\n",
-    "\n",
-    "# --- Datos del negocio ---\n",
-    "nombre_negocio = \"PAPELERIA EL RECIBO\"\n",
-    "nit = \"900.123.456-4\"\n",
-    "numero_factura = 1\n",
-    "tarifa_iva = 0.19\n",
-    "\n",
-    "print(\"Bienvenido al sistema de facturacion de\", nombre_negocio)\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 2. Datos de entrada: el sistema atiende al cajero. Pídele el nombre del cliente, el producto, la cantidad, el valor unitario y cuánto cuesta lo mismo en la competencia.\n",
-    "# --- Datos de entrada ---\n",
-    "cliente = input(\"Nombre del cliente: \")\n",
-    "producto = input(\"Producto: \")\n",
-    "cantidad_texto = input(\"Cantidad: \")\n",
-    "valor_texto = input(\"Valor unitario sin IVA: \")\n",
-    "competencia_texto = input(\"Precio total en la competencia: \")\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 3. Conversión de tipos: lo que entró es texto y con texto no se puede calcular. Conviértelo a número y muestra el tipo que quedó guardado.\n",
-    "# --- Conversión de texto a número ---\n",
-    "cantidad = int(cantidad_texto)\n",
-    "valor_unitario = float(valor_texto)\n",
-    "total_competencia = float(competencia_texto)\n",
-    "\n",
-    "print(\"Tipo de cantidad:\", type(cantidad))\n",
-    "print(\"Tipo de valor_unitario:\", type(valor_unitario))\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 4. Proceso: calcula el subtotal, el IVA, el total a pagar y cuánto se ahorra el cliente frente a la competencia. Siempre con variables, nunca con números escritos a mano.\n",
-    "# --- Cálculos ---\n",
-    "subtotal = cantidad * valor_unitario\n",
-    "iva = subtotal * tarifa_iva\n",
-    "total = subtotal + iva\n",
-    "ahorro = total_competencia - total\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 5. Salida: imprime la factura. Encabezado con el negocio, el NIT y el número consecutivo; luego el cliente, el detalle del producto, el subtotal, el IVA, el TOTAL A PAGAR y el ahorro frente a la competencia.\n",
-    "# --- Resultados: la factura ---\n",
-    "print(\"========================================\")\n",
-    "print(nombre_negocio, \"- NIT\", nit)\n",
-    "print(\"FACTURA DE VENTA No.\", numero_factura)\n",
-    "print(\"========================================\")\n",
-    "print(\"Cliente:\", cliente)\n",
-    "print(\"Producto:\", producto, \"x\", cantidad, \"a\", valor_unitario)\n",
-    "print(\"----------------------------------------\")\n",
-    "print(\"Subtotal:\", subtotal)\n",
-    "print(\"IVA (19%):\", iva)\n",
-    "print(\"TOTAL A PAGAR:\", total)\n",
-    "print(\"Competencia:\", total_competencia)\n",
-    "print(\"Ahorro del cliente:\", ahorro)\n",
-    "print(\"Gracias por su compra\")\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# 6. Cierre de caja: registra dos ventas más del día, suma lo vendido y calcula el promedio por venta. Muestra el resumen.\n",
-    "# --- Cierre de caja del día ---\n",
-    "venta2 = float(input(\"Total de la segunda venta: \"))\n",
-    "venta3 = float(input(\"Total de la tercera venta: \"))\n",
-    "\n",
-    "total_dia = total + venta2 + venta3\n",
-    "promedio_dia = (total + venta2 + venta3) / 3\n",
-    "\n",
-    "print(\"RESUMEN DEL DIA\")\n",
-    "print(\"Ventas registradas: 3\")\n",
-    "print(\"Total vendido:\", total_dia)\n",
-    "print(\"Promedio por venta:\", promedio_dia)\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# Cierre\n",
-    "\n",
-    "El sistema quedó completo: registra los datos del negocio, atiende al cajero, convierte, calcula, emite la factura con su consecutivo y cierra la caja del día.\n",
-    "\n",
-    "Descarga el cuaderno con el botón ⬇ de la barra, publícalo en tu repositorio y pega el enlace en la casilla de entrega.\n"
-   ]
-  }
- ]
-}
+# S23 Taller 6 — Observatorio financiero
+
+**Curso:** Lenguajes de Programación  
+**Estudiante:** David Córdoba  
+**Proyecto:** aplicación interactiva para explorar y comparar activos financieros usando datos históricos.
+
+## ¿Qué hace la aplicación?
+
+- Permite seleccionar tres o más activos financieros.
+- Consulta precios históricos a través de Yahoo Finance usando `yfinance`.
+- Permite escoger el período de análisis.
+- Compara precios normalizados con base 100.
+- Calcula rendimientos diarios, rendimiento acumulado y volatilidad anualizada.
+- Muestra una media móvil configurable.
+- Presenta una matriz de correlación entre rendimientos.
+- Permite descargar los precios consultados en CSV.
+
+## Tecnologías
+
+- **Streamlit:** interfaz web interactiva.
+- **yfinance:** consulta de datos históricos de Yahoo Finance.
+- **Pandas:** organización y análisis de series temporales.
+- **NumPy:** operaciones numéricas y cálculos estadísticos.
+- **Matplotlib:** visualización de la matriz de correlación.
+
+## Instalación y ejecución local
+
+Se recomienda usar Python 3.10 o superior.
+
+1. Descarga o clona este repositorio.
+2. Abre una terminal en la carpeta del proyecto.
+3. Instala las dependencias:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Ejecuta la aplicación:
+
+   ```bash
+   streamlit run app.py
+   ```
+
+5. Abre en el navegador la dirección local que muestra Streamlit, normalmente `http://localhost:8501`.
+
+## Significado de los indicadores
+
+- **Precio normalizado:** transforma la primera observación de cada activo a una base de 100 para comparar cambios relativos.
+- **Rendimiento diario:** variación porcentual entre dos cierres consecutivos.
+- **Rendimiento acumulado:** variación porcentual entre el primer y el último precio del período.
+- **Volatilidad anualizada:** desviación estándar de los rendimientos diarios multiplicada por la raíz cuadrada de 252 y expresada en porcentaje. Es una estimación basada en datos históricos.
+- **Media móvil:** promedio de los precios de una ventana de días bursátiles; ayuda a observar tendencias, pero no predice el futuro.
+- **Correlación:** mide la relación lineal entre los rendimientos de dos activos, entre -1 y +1.
+
+## Limitaciones
+
+Los datos dependen de la disponibilidad y calidad de Yahoo Finance. Los mercados tienen calendarios diferentes; los activos pueden tener datos faltantes y los resultados dependen del período elegido. Los indicadores históricos no garantizan rendimientos futuros y esta aplicación es educativa, no asesoría financiera.
+
+## Evidencias y entrega
+
+Añade al informe PDF capturas reales de la aplicación en ejecución, con títulos y explicaciones. Incluye al menos cuatro capturas: selección de activos y período, precios normalizados, tabla de indicadores y correlaciones. Compara al menos tres activos y explica los resultados observados.
+
+**Enlace del repositorio:** pega aquí la URL de tu repositorio de GitHub después de publicar los archivos.  
+**Aplicación desplegada (opcional):** pega aquí la URL pública si la despliegas.
